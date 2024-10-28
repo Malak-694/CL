@@ -17,7 +17,7 @@ public class CommandLineInterpreter {
             }
             Main.curren_dir = Dircectory ;
         }
-        else if (current_dir.lastIndexOf("\\") == -1){
+        else {
             Dircectory = current_dir+'\\'+argu ;
             File dir = new File(Dircectory);
             if(dir.isDirectory()){
