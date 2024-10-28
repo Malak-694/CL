@@ -15,6 +15,7 @@ public class CommandLineInterpreter {
             System.out.println("current path is not directory");
         }
         File[] files =null;
+        List<File> visibleFiles = new ArrayList<>();
         if(currentDirectory.exists()&&currentDirectory.isDirectory()){
             System.out.println("the content of the current directory: "+currentDirectory);
             files=currentDirectory.listFiles();
@@ -23,36 +24,37 @@ public class CommandLineInterpreter {
                     for(int i= files.length-1; i>=0 ;i--) {
                         if(files[i].getName().startsWith(".")) continue;
                         System.out.println(files[i].getName());
+                        visibleFiles.add(files[i]);
                     }
                 }
                 else{
                     for(File  x: files){
                         if(x.getName().startsWith(".")&&!specification.equals("-a")) continue;
                         System.out.println(x.getName());
+                        visibleFiles.add(x);
                     }
                 }
 
             }
         }
-        return files;
+        return visibleFiles.toArray(new File[0]);
     }
     public File touch(String path){
         File file = new File(path);
     try {
-        //get the path of the parent as string
         String parentPathString= file.getParent();
         if (parentPathString != null) {
             Path parentPath = Paths.get(parentPathString);
             if (!Files.exists(parentPath)) {
                 Files.createDirectories(parentPath);
-                System.out.println("Created directories: " + parentPath);
+                System.out.println("parent directory is created : " + parentPath);
             } else {
-                System.out.println("Parent directories already exist: " + parentPath);
+                System.out.println("parent directories already exist: " + parentPath);
             }
         }
         if(file.exists()){
             file.setLastModified(System.currentTimeMillis());
-            System.out.println("file exist");
+            System.out.println("file exists");
         }else{
             if(file.createNewFile()) {
                 System.out.println("file created");
