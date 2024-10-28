@@ -12,18 +12,28 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome , write valid commands!!");
         CommandLineInterpreter terminal = new CommandLineInterpreter();
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        while(true){
 
+        while(true){
+            System.out.print(curren_dir + '>');
             String input= scanner.nextLine().trim();
             if(input.equals("exit")) break;
-            String[] command_line = input.split("\\|");
+            String[] command_line = Arrays.stream(input.split("\\|"))
+                    .map(String::trim) // Trim each substring
+                    .toArray(String[]::new);
+
+            String[] result = new String[0];
             int current_c = 0 ;
+
             while (current_c<command_line.length){
                 String[] command = command_line[current_c].split(" ");
 
-                if(command[0].equals("ls")){
+                if(command_line[current_c].contains(">>")){
+                    // System.out.println(current_c);
+                    terminal.appendRedirect(command_line[current_c]);
+                }
+                else if(command_line[current_c].contains(">")){
+                    terminal.redirect(command_line[current_c]);
+                }else if(command[0].equals("ls")){
 
                     String specification="";
                     String path="";
@@ -34,7 +44,7 @@ public class Main {
                         } else if (command.length == 2) path = command[1];
                     }
 
-                    terminal.ls(specification,path);
+                    result =  terminal.ls(specification,path);
                 }else if(command[0].equalsIgnoreCase("touch")){
                     String path;
                     if(command.length==2) {
@@ -48,16 +58,63 @@ public class Main {
                 }
                 else if(command[0].equalsIgnoreCase("cd") ){
                     if(command.length==2){
-                        System.out.println(curren_dir);
-                        terminal.cd(curren_dir,command[1]);
-                        System.out.println(curren_dir);
+                        // System.out.println(curren_dir);
+                        try {
+                            terminal.cd(curren_dir,command[1]);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // System.out.println(curren_dir);
                     }
                     else{
                         System.out.println("wrong command");
                     }
 
                 }
+                else if (command[0].equalsIgnoreCase("sort")){
+                    if(command.length!=2){
+                        System.out.println("write: sort <<fileName>>");
+                        result = new String[0];
+                    }
+                    else {
+                        File f = new File(command[1]);
+                        if(f.exists()){
+                            result = terminal.sort(command[1]);
+                        }
+                        else{
+                            System.out.println("no file exists with this name");
+                        }
+                    }
+                }
+                else if(command[0].equalsIgnoreCase("uniq")){
+                    if(command.length>1){
+                        System.out.println("use command wrong");
+                        result = new String[0];
+                    }
+                    else {
+                        result = terminal.uniq(result);
+                    }
+                }
+                else if(command[0].equals("grep")) {
+                    if(command.length!= 2 || result.length == 0 ){
+                        System.out.println("wrong command");
+                        result = new String[0];
+                    } else {
+                        result = terminal.grep(result , command[1]);
+                    }
+                }
+                else if(command[0].equals("more")){
+                    if(current_c == 0 || command.length>1){
+                        System.out.println("wrong command");
+                        result = new String[0];
+                    }
+
+                }
                 current_c++;
+
+            }
+            for (String line : result){
+                System.out.println(line);
             }
         }
     }
