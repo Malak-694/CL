@@ -78,6 +78,7 @@ public class CommandLineInterpreter {
                 Files.createDirectories(parentPath);
                 System.out.println("Parent directory exists: " + parentPath);
             }
+            //malak
             if(file.exists()){
                 file.setLastModified(System.currentTimeMillis());
                 System.out.println("file exists");
