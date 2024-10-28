@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ls {
     @BeforeEach
     public void before() throws IOException{
-       File testDir = new File("testDir");
-       if(!testDir.exists()){
-           testDir.mkdir();
-       }
-       new File(testDir, "file1.txt").createNewFile();
-       new File(testDir, "zile2.txt").createNewFile();
-       new File(testDir, ".file3.txt").createNewFile();
+        File testDir = new File("testDir");
+        if(!testDir.exists()){
+            testDir.mkdir();
+        }
+        new File(testDir, "file1.txt").createNewFile();
+        new File(testDir, "zile2.txt").createNewFile();
+        new File(testDir, ".file3.txt").createNewFile();
     }
     @AfterEach
     public void clear(){
@@ -35,7 +35,7 @@ public class ls {
         CommandLineInterpreter terminal = new CommandLineInterpreter();
         String specification="";
         String path="testDir";
-        File[] file = terminal.ls(specification,path);
+        String[] file = terminal.ls(specification,path);
         assertTrue(file.length==2,"this command should return the list of files in the directory");
     }
     @Test
@@ -44,8 +44,8 @@ public class ls {
         CommandLineInterpreter terminal = new CommandLineInterpreter();
         String specification="-a";
         String path="testDir";
-        File[] files = terminal.ls(specification,path);
-        boolean foundWithDot = Arrays.stream(files).anyMatch(file->file.getName().equals(".file3.txt"));
+        String[] files = terminal.ls(specification,path);
+        boolean foundWithDot = Arrays.stream(files).anyMatch(file->file.equals(".file3.txt"));
         assertTrue(foundWithDot,"this command should return the list of all files in the directory even if it starts with .");
     }
     @Test
@@ -54,8 +54,8 @@ public class ls {
         CommandLineInterpreter terminal = new CommandLineInterpreter();
         String specification="-r";
         String path="testDir";
-        File[] files = terminal.ls(specification,path);
-        boolean foundZfirst = files[0].getName().equals("zile2.txt");
+        String[] files = terminal.ls(specification,path);
+        boolean foundZfirst = files[0].equals("zile2.txt");
 
         assertTrue(foundZfirst,"this command should return the list of all files in the directory even if it starts with .");
     }

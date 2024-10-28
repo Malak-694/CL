@@ -37,9 +37,9 @@ public class touch {
         CommandLineInterpreter terminal = new CommandLineInterpreter();
         String specification="";
         String path="testDir";
-        File [] filesBefore = terminal.ls(specification,path);
+        String [] filesBefore = terminal.ls(specification,path);
         terminal.touch("testDir\\y.txt");
-        File [] filesAfter = terminal.ls(specification,path);
+        String [] filesAfter = terminal.ls(specification,path);
         boolean newFileExists = new File("testDir\\y.txt").exists();
         assertTrue(filesAfter.length==filesBefore.length+1&&newFileExists,"the file has been created");
 
@@ -51,13 +51,13 @@ public class touch {
         File file = new File("testDir\\file1.txt");
         long beforeTime = 0;
         if (file.exists()){
-             beforeTime = file.lastModified();
+            beforeTime = file.lastModified();
         }
         String specification="";
         String path="testDir";
-        File [] filesBefore = terminal.ls(specification,path);
+        String [] filesBefore = terminal.ls(specification,path);
         terminal.touch("testDir\\file1.txt");
-        File [] filesAfter = terminal.ls(specification,path);
+        String [] filesAfter = terminal.ls(specification,path);
         long afterTime = file.lastModified();
         assertTrue(afterTime>beforeTime||filesBefore==filesAfter, " file already exist but modified recently ");
     }
