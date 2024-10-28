@@ -25,13 +25,23 @@ public class Main {
                 String specification="";
                 String path="";
                 if(command.length>=2) {
-                    if (command[1].equals("-a") || command[1].equals("-r")) {
+                    if (command[1].equalsIgnoreCase("-a") || command[1].equalsIgnoreCase("-r")) {
                         specification = command[1];
                         if (command.length == 3) path = command[2];
                     } else if (command.length == 2) path = command[1];
                 }
 
                 terminal.ls(specification,path);
+            }else if(command[0].equalsIgnoreCase("touch")){
+                String path;
+                if(command.length==2) {
+                    path= command[1];
+                    terminal.touch(path);
+                }else{
+                    System.out.println("Error: No file path provided for touch command.");
+
+                }
+
             }
         }
     }
