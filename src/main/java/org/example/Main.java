@@ -132,6 +132,29 @@ public class Main {
                     terminal.help();
 
                 }
+                else if(command[0].equalsIgnoreCase("pwd")){
+                    System.out.println("Current Directory: "+ terminal.pwd());
+                    break;
+                }
+                else if(command[0].equalsIgnoreCase("mkdir")){
+                    if(command.length>1){
+                        for (int i = 1; i< command.length; i++) {
+                            terminal.mkdir(command[i]);
+                        }
+                    }
+                    else{
+                        System.out.println("error: directory name isn't provided for mkdir command");
+                    }
+                }
+                else if (command[0].equals("mv")) {
+                    if (command.length< 3) {
+                        System.out.println("error, mv command requires at least two arguments");
+                    }
+                    else{
+                        String[] paths= Arrays.copyOfRange(command, 1, command.length);
+                        terminal.mv(paths);
+                    }
+                }
                 current_c++;
 
             }
