@@ -224,4 +224,72 @@ public class CommandLineInterpreter {
             System.out.println("error happening while creating new file "+ x);
         }
         return file.getName();}
+    //////////////////////////
+    public void rm(String... filenames) {
+        for (String filename : filenames) {
+            File file = new File(filename);
+
+            if (file.exists() && file.isFile()) {
+                if (file.delete()) {
+                    System.out.println("Deleted file: " + filename);
+                } else {
+                    System.out.println("Failed to delete file: " + filename);
+                }
+            } else {
+                System.out.println("File not found or not a file: " + filename);
+            }
+        }
+    }
+
+    public List<String> cat(String... filenames) {
+        List<String> content = new ArrayList<>();
+
+        if (filenames.length == 0) {
+            System.out.println("Enter text... (type 'done' to finish the input process):");
+            Scanner scanner = new Scanner(System.in);
+            try {
+                String line;
+                while (scanner.hasNextLine() && !(line = scanner.nextLine()).equalsIgnoreCase("done")) {
+                    System.out.println(line);
+                    content.add(line);
+                }
+            } catch (NoSuchElementException e) {
+                System.out.println("There is no line founded,input process ended");
+            }
+        } else {
+            for (String filename : filenames) {
+                File file = new File(filename);
+                if (file.exists() && file.isFile()) {
+                    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.out.println(line);
+                            content.add(line);
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Error reading file");
+                    }
+                } else {
+                    System.out.println("File not found or it is not a file");
+                }
+            }
+        }
+        return content;
+    }
+
+    public  void help() {
+        System.out.println("Available commands & Their usage:");
+        System.out.println("  pwd        -> Prints the working directory");
+        System.out.println("  cd         ->  Changes the current directory");
+        System.out.println("  ls –a      -> display all contents even entries starting with .");
+        System.out.println("  ls –r      -> reverse order)");
+        System.out.println("  rm         -> Remove one or more files");
+        System.out.println("  cat        -> Display the contents of a file");
+        System.out.println("  rmdir      -> Remove a directory");
+        System.out.println("  ls         -> List files in the current or specified directory");
+        System.out.println("  help       -> Show available commands");
+        System.out.println("  exit       -> Exit the CLI");
+    }
 }
+
+

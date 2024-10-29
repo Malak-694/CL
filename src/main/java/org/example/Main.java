@@ -110,6 +110,28 @@ public class Main {
                     }
 
                 }
+                else if (command[0].equals("rm")) {
+                    if (command.length < 2) {
+                        System.out.println("ERROR:there is not file to remove");
+                    } else {
+                        for (int i = 1; i < command.length; i++) {
+                            terminal.rm(command[i]);
+                        }
+                    }
+                }
+                else if(command[0].equals("cat")){
+                    if (command.length == 1) {
+                        terminal.cat();
+                    } else {
+                        String[] filenames = Arrays.copyOfRange(command, 1, command.length);
+                        terminal.cat(filenames);
+                    }
+
+                }
+                else if(command[0].equals("help")){
+                    terminal.help();
+
+                }
                 current_c++;
 
             }
