@@ -29,76 +29,68 @@ public class CommandLineInterpreter {
         }
         return Directory.getName();
 
-
     }
-    public void mv(String... paths){
+
+    public void mv(String... paths) {
         if (paths.length < 2) {
             System.out.println("error, mv command requires at least two arguments");
             return;
         }
 
-        File dest = new File(paths[paths.length-1]);
-        if (paths.length > 2 && (!dest.exists() || !dest.isDirectory())) {
-            System.out.println("error, last argument must be an existing directory when moving multiple files.");
+        File dest= new File(paths[paths.length - 1]);
+        if (paths.length>2 &&(!dest.exists() || !dest.isDirectory())) {
+            System.out.println("error, last argument must be an existing directory when moving multiple files");
             return;
         }
+
         boolean force = false;
-        if (paths[0].equals("-f")||paths[0].equals("--force")){
-            force = true;
-            paths = Arrays.copyOfRange(paths, 1, paths.length);
+        if (paths[0].equals("-f")||paths[0].equals("--force")) {
+            force= true;
+            paths= Arrays.copyOfRange(paths, 1, paths.length);
         }
         for(int i=0; i<paths.length-1; i++) {
             File source_dirc = new File(paths[i]);
-            if (!source_dirc.exists()) {
-                System.out.println("error, source file or directory doesn't exist: "+source_dirc.getAbsolutePath());
+            if (!source_dirc.exists()){
+                System.out.println("error,source file or directory doesn't exist: " + source_dirc.getAbsolutePath());
                 continue;
             }
 
-            File target=(dest.isDirectory())? new File(dest, source_dirc.getName()): dest;
-
-            if (source_dirc.isDirectory() && !target.isDirectory()) {
-                System.out.println("error, can't move a directory to a non-directory target");
-                continue;
-            }
-            if (target.exists()){
+            File target=(dest.isDirectory())? new File(dest, source_dirc.getName()):dest;
+            if (target.exists()) {
                 if (!target.canWrite() && !force){
-                    System.out.print("File " +target.getName() +" is not writable. Overwrite? (y/n): ");
+                    System.out.print("File " + target.getName() + " is not writable. Overwrite? (y/n): ");
                     String response = scanner.nextLine().trim();
-                    if (!response.equalsIgnoreCase("y")) {
+                    if (!response.equalsIgnoreCase("y")){
                         System.out.println("skipped: " + source_dirc.getAbsolutePath());
                         continue;
                     }
                 }
-                else if(!force) {
-                    System.out.print("file " +target.getName() + "already exists. Overwrite? (y/n): ");
+                else if(!force){
+                    System.out.print("File " + target.getName() +" already exists. Overwrite? (y/n): ");
                     String response = scanner.nextLine().trim();
-                    if(!response.equalsIgnoreCase("y")) {
-                        System.out.println("Skipped: " + source_dirc.getAbsolutePath());
+                    if (!response.equalsIgnoreCase("y")) {
+                        System.out.println("skipped: " +source_dirc.getAbsolutePath());
                         continue;
                     }
                 }
             }
-            if (target.exists() && !target.canWrite()){
-                if(!target.delete()){
-                    System.out.println("error, failed to delete unwritable file "+ target.getAbsolutePath());
+            if (target.exists()) {
+                if (!target.delete()) {
+                    System.out.println("error: Failed to delete unwritable file " + target.getAbsolutePath());
                     continue;
                 }
             }
 
-            if (!source_dirc.isFile() && !source_dirc.getAbsolutePath().equals(target.getAbsolutePath())){
-                System.out.println("error, only regular files can be moved across file systems.");
-                continue;
-            }
-            if (source_dirc.renameTo(target)){
-                System.out.println("moved "+source_dirc.getAbsolutePath() + " to " + target.getAbsolutePath());
-            }
-            else{
-                System.out.println("failed to move " +source_dirc.getAbsolutePath()+ " to " +target.getAbsolutePath());
+            try {
+                Files.move(source_dirc.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("Moved " + source_dirc.getAbsolutePath() + " to " + target.getAbsolutePath());
+            } catch (IOException e) {
+                System.out.println("Failed to move " + source_dirc.getAbsolutePath() + ": " + e.getMessage());
             }
         }
     }
 
-    public void cd(String current_dir , String argu) throws IOException {
+
     public void cd(String current_dir, String argu) throws IOException {
         String Dircectory = "";
         if (argu.equals("..")) {
