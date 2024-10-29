@@ -128,10 +128,20 @@ public class Main {
                     }
 
                 }
+                else if(command[0].equals("rmdir")) {
+                    if (command.length < 2) {
+                        System.out.println("ERROR:there is not dir to remove");
+                    } else {
+                        for (int i = 1; i < command.length; i++) {
+                            terminal.rmdir(command[i]);
+                        }
+                    }
+                }
                 else if(command[0].equals("help")){
                     terminal.help();
 
                 }
+
                 current_c++;
 
             }
