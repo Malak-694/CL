@@ -40,7 +40,7 @@ public class CommandLineInterpreter {
             System.out.println("write : <command> >> <file>");
 
         } else if (splited_command[0].equals("cat")) {
-            System.out.println("write : <command> >> <file>");
+            result = cat().toArray(String[]::new);
         } else if (splited_command[0].equals("ls")) {
             result = ls("", "");
         } else if (splited_command[0].equals("echo")) {
@@ -90,7 +90,7 @@ public class CommandLineInterpreter {
             System.out.println("write : <command> > <file>");
 
         } else if (splited_command[0].equals("cat")) {
-            System.out.println("write : <command> > <file>");
+            result = cat().toArray(String[]::new);
         } else if (splited_command[0].equals("ls")) {
             result = ls("", "");
         } else if (splited_command[0].equals("echo")) {
@@ -107,7 +107,7 @@ public class CommandLineInterpreter {
         }
         if (result.length > 0) {
             File f = new File(splited_command[splited_command.length - 1]);
-            if (flag == true) {
+            if (flag) {
                 System.out.println("write : echo text >> <file>");
             } else {
                 FileWriter fw = null;
@@ -129,13 +129,14 @@ public class CommandLineInterpreter {
     }
 
     public String[] sort(String name) {
-        String[] conntent = ls("", name);
+        String[] conntent = cat(name).toArray(String[]::new);
         Arrays.sort(conntent);
         return conntent;
     }
 
     public String[] uniq(String[] arr) {
-        String[] uniq_array = Arrays.stream(arr)
+        String[] uniq_array;
+        uniq_array = Arrays.stream(arr)
                 .distinct()
                 .toArray(String[]::new);
 
@@ -249,8 +250,8 @@ public class CommandLineInterpreter {
             try {
                 String line;
                 while (scanner.hasNextLine() && !(line = scanner.nextLine()).equalsIgnoreCase("done")) {
-                    System.out.println(line);
-                    content.add(line);
+                   // System.out.println(line);
+                    content.add(line.trim());
                 }
             } catch (NoSuchElementException e) {
                 System.out.println("There is no line founded,input process ended");
@@ -266,8 +267,8 @@ public class CommandLineInterpreter {
                     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                         String line;
                         while ((line = reader.readLine()) != null) {
-                            System.out.println(line);
-                            content.add(line);
+                            //System.out.println(line);
+                            content.add(line.trim());
                         }
                     } catch (IOException e) {
                         System.out.println("Error reading file");
