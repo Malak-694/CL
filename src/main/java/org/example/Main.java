@@ -86,7 +86,7 @@ public class Main {
                         }
                     }
                 }
-                else if(command[0].equalsIgnoreCase("uniq")){
+                else if(command[0].equalsIgnoreCase("uniq")  && result.length > 0){
                     if(command.length>1){
                         System.out.println("use command wrong");
                         result = new String[0];
@@ -96,7 +96,7 @@ public class Main {
                     }
                 }
                 else if(command[0].equals("grep")) {
-                    if(command.length!= 2 || result.length == 0 ){
+                    if(command.length!= 2 && result.length == 0 ){
                         System.out.println("wrong command");
                         result = new String[0];
                     } else {
@@ -121,16 +121,24 @@ public class Main {
                 }
                 else if(command[0].equals("cat")){
                     if (command.length == 1) {
-                        terminal.cat();
+                       result = terminal.cat().toArray(String[]::new);
                     } else {
                         String[] filenames = Arrays.copyOfRange(command, 1, command.length);
-                        terminal.cat(filenames);
+                      result =  terminal.cat(filenames).toArray(String[]::new);
                     }
 
                 }
+                else if(command[0].equals("rmdir")) {
+                    if (command.length < 2) {
+                        System.out.println("ERROR:there is not dir to remove");
+                    } else {
+                        for (int i = 1; i < command.length; i++) {
+                            terminal.rmdir(command[i]);
+                        }
+                    }
+                }
                 else if(command[0].equals("help")){
                     terminal.help();
-
                 }
                 else if(command[0].equalsIgnoreCase("pwd")){
                     System.out.println("Current Directory: "+ terminal.pwd());
