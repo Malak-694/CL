@@ -31,7 +31,7 @@ public class CommandLineInterpreter {
 
 
     }
-    public void mv(String... paths) {
+    public void mv(String... paths){
         if (paths.length < 2) {
             System.out.println("error, mv command requires at least two arguments");
             return;

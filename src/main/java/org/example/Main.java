@@ -113,7 +113,7 @@ public class Main {
                 else if (command[0].equals("rm")) {
                     if (command.length < 2) {
                         System.out.println("ERROR:there is not file to remove");
-                    } else {
+                    } else{
                         for (int i = 1; i < command.length; i++) {
                             terminal.rm(command[i]);
                         }
