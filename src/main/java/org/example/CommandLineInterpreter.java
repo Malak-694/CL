@@ -127,9 +127,19 @@ public class CommandLineInterpreter {
             System.out.println("write : <command> >> <file>");
 
         } else if (splited_command[0].equals("cat")) {
-            result = cat().toArray(String[]::new);
+            if(!splited_command[1].equals(">>")){
+                result = cat(splited_command[1]).toArray(String[]::new);
+            }
+            else {
+                result = cat().toArray(String[]::new);
+            }
         } else if (splited_command[0].equals("ls")) {
-            result = ls("", "");
+            if(!splited_command[1].equals(">>")){
+                result = ls(splited_command[1],"");
+            }
+            else {
+                result = ls("","");
+            }
         } else if (splited_command[0].equals("echo")) {
             if (splited_command.length != 4) {
                 flag = true;
@@ -144,15 +154,15 @@ public class CommandLineInterpreter {
         }
         if (result.length > 0) {
             File f = new File(splited_command[splited_command.length - 1]);
-            if (!f.isAbsolute()) {
-                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
-            }
-            if (f.isDirectory()) {
-                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
-                return;
-            }
+//            if (!f.isAbsolute()) {
+//                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
+//            }
+//            if (f.isDirectory()) {
+//                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
+//                return;
+//            }
             if (!f.exists()) {
-                if (flag == true) {
+                if (flag) {
                     System.out.println("write : echo text >> <file>");
                 } else {
                     System.out.println("No file with this name exists");
@@ -184,15 +194,25 @@ public class CommandLineInterpreter {
             System.out.println("write : <command> > <file>");
 
         } else if (splited_command[0].equals("cat")) {
-            result = cat().toArray(String[]::new);
-        } else if (splited_command[0].equals("ls")) {
-            result = ls("", "");
+            if(!splited_command[1].equals(">")){
+                 result = cat(splited_command[1]).toArray(String[]::new);
+            }
+            else {
+                result = cat().toArray(String[]::new);
+            }
+            } else if (splited_command[0].equals("ls")) {
+            if(!splited_command[1].equals(">")){
+                result = ls(splited_command[1],"");
+            }
+            else {
+                result = ls("","");
+            }
         } else if (splited_command[0].equals("echo")) {
             if (splited_command.length != 4) {
                 flag = true;
             }
             String text = splited_command[1];
-            if (!text.equals(">>") && splited_command[2].equals(">")) {
+            if (!text.equals(">") && splited_command[2].equals(">")) {
                 result = new String[]{text};
             } else {
                 System.out.println("write : echo text > <file>");
@@ -201,19 +221,19 @@ public class CommandLineInterpreter {
         }
         if (result.length > 0) {
             File f = new File(splited_command[splited_command.length - 1]);
-            if (!f.isAbsolute()) {
-                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
-            }
-            if (f.isDirectory()) {
-                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
-                return;
-            }
+//            if (!f.isAbsolute()) {
+//                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
+//            }
+//            if (f.isDirectory()) {
+//                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
+//                return;
+//            }
             if (flag) {
-                System.out.println("write : echo text >> <file>");
+                System.out.println("write : echo text > <file>");
             } else {
                 FileWriter fw = null;
                 try {
-                    fw = new FileWriter(f , true);
+                    fw = new FileWriter(f);
 
                     for (String string : result) {
                         fw.write(string);
@@ -228,7 +248,7 @@ public class CommandLineInterpreter {
             System.out.println("wrong command");
         }
     }
-
+/////////////
     public String[] sort(String name) {
         String[] conntent = cat(name).toArray(String[]::new);
         Arrays.sort(conntent);

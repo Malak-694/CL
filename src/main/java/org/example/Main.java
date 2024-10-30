@@ -25,11 +25,11 @@ public class Main {
             if(input.contains("|")){
                 result=terminal.pipe(input);
             }
-            else if (command[current_c].contains(">>")) {
+            else if (input.contains(">>")) {
                 // System.out.println(current_c);
-                terminal.appendRedirect(command[current_c]);
-            } else if (command[current_c].contains(">")) {
-                terminal.redirect(command[current_c]);
+                terminal.appendRedirect(input);
+            } else if (input.contains(">")) {
+                terminal.redirect(input);
             } else if (command[0].equals("ls")) {
 
                 String specification = "";
