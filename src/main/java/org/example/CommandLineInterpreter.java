@@ -301,8 +301,8 @@ public class CommandLineInterpreter {
         try {
             Path parentPath = file.toPath().getParent();
             if (parentPath != null || Files.notExists(parentPath)) {
-                Files.createDirectories(parentPath);
-                //System.out.println("Parent directory exists: " + parentPath);
+
+                System.out.println("Parent directory not exist");
             }
             if (file.exists()) {
                 file.setLastModified(System.currentTimeMillis());
@@ -439,6 +439,91 @@ public class CommandLineInterpreter {
         System.out.println("  help       -> Show available commands");
         System.out.println("  exit       -> Exit the CLI");
     }
+    public String [] pipe(String commnd){
+        String[] command_line = Arrays.stream(commnd.split("\\|"))
+                .map(String::trim) // Trim each substring
+                .toArray(String[]::new);
 
-}
+        String[] result = new String[0];
+        int current_c = 0 ;
 
+        while (current_c<command_line.length){
+            String[] command = command_line[current_c].split(" ");
+
+            if(command[0].equals("ls")){
+
+                String specification="";
+                String path="";
+                if(command.length>=2) {
+                    if (command[1].equalsIgnoreCase("-a") || command[1].equalsIgnoreCase("-r")) {
+                        specification = command[1];
+                        if (command.length == 3) path = command[2];
+                    } else if (command.length == 2) path = command[1];
+                }
+
+                result = ls(specification,path);
+            }
+            else if (command[0].equalsIgnoreCase("sort")){
+                if(command.length!=2){
+                    System.out.println("write: sort <<fileName>>");
+                    result = new String[0];
+                }
+                else {
+                    File f = new File(command[1]);
+                    if(f.exists()){
+                        result = sort(command[1]);
+                    }
+                    else{
+                        System.out.println("no file exists with this name");
+                    }
+                }
+            }
+            else if(command[0].equalsIgnoreCase("uniq")  && result.length > 0){
+                if(command.length>1){
+                    System.out.println("use command wrong");
+                    result = new String[0];
+                }
+                else {
+                    result = uniq(result);
+                }
+            }
+            else if(command[0].equals("grep")) {
+                if(command.length!= 2 && result.length == 0 ){
+                    System.out.println("wrong command");
+                    result = new String[0];
+                } else {
+                    result = grep(result , command[1]);
+                }
+            }
+            else if(command[0].equals("more")){
+                if(current_c == 0 || command.length>1){
+                    System.out.println("wrong command");
+                    result = new String[0];
+                }
+
+            }
+            else if(command[0].equals("cat")){
+                if (command.length == 1) {
+                    result = cat().toArray(String[]::new);
+                } else {
+                    String[] filenames = Arrays.copyOfRange(command, 1, command.length);
+                    result =  cat(filenames).toArray(String[]::new);
+                }
+
+            }
+
+            else if(command[0].equalsIgnoreCase("pwd")){
+                System.out.println("Current Directory: "+ pwd());
+                break;
+            }
+            else{
+                System.out.println("wrong command");
+            }
+            current_c++;
+
+        }
+
+        return result;
+    }
+
+    }
