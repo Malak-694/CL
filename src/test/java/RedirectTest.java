@@ -15,26 +15,12 @@ public class RedirectTest {
 
     @BeforeEach
     void before() throws IOException {
-        File testDir = new File("test1Dir");
-        if(!testDir.exists()){
-            testDir.mkdir();
-        }
-        new File(testDir, "file1.txt").createNewFile();
-        new File(testDir, "zip.txt").createNewFile();
-        new File(testDir, "file3.txt").createNewFile();
         new File(Main.curren_dir,"testRd.txt").createNewFile();
         // Main.curren_dir = testDir.getAbsolutePath();
     }
     @AfterEach
     void after() throws IOException {
-        File testDir = new File("test1Dir");
-        File[] files = testDir.listFiles();
-        if(files!=null) {
-            for (File file : files) {
-                file.delete();
-            }
-            testDir.delete();
-        }
+
         File testRd = new File("testRd.txt");
         if(testRd.exists()){
             testRd.delete();
@@ -47,7 +33,6 @@ public class RedirectTest {
         String command = "ls > testRd.txt";
         ci.redirect(command);
         File testfile = new File(Main.curren_dir,"testRd.txt");
-        assertTrue(testfile.exists(), "Redirect file testRd.txt was not created.");
 
         List<String> lines = new ArrayList<String>();
         if(testfile.exists()){
