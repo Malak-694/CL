@@ -1,4 +1,3 @@
-
 import org.example.CommandLineInterpreter;
 import org.example.Main;
 import org.junit.jupiter.api.AfterEach;
@@ -11,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class redirectTest {
+public class RedirectTest {
 
 
     @BeforeEach
@@ -23,8 +22,8 @@ public class redirectTest {
         new File(testDir, "file1.txt").createNewFile();
         new File(testDir, "zip.txt").createNewFile();
         new File(testDir, "file3.txt").createNewFile();
-        new File("testRd.txt").createNewFile();
-        Main.curren_dir = testDir.getAbsolutePath();
+        new File(Main.curren_dir,"testRd.txt").createNewFile();
+        // Main.curren_dir = testDir.getAbsolutePath();
     }
     @AfterEach
     void after() throws IOException {
@@ -43,11 +42,11 @@ public class redirectTest {
     }
 
     @Test
-    void redirectWithLsTest() throws IOException {
+    void appRedirectWithLsTest() throws IOException {
         CommandLineInterpreter ci = new CommandLineInterpreter();
         String command = "ls > testRd.txt";
         ci.redirect(command);
-        File testfile = new File("testRd.txt");
+        File testfile = new File(Main.curren_dir,"testRd.txt");
         assertTrue(testfile.exists(), "Redirect file testRd.txt was not created.");
 
         List<String> lines = new ArrayList<String>();
@@ -62,7 +61,7 @@ public class redirectTest {
                 e.printStackTrace();
             }
         }
-        String[] exepected = ci.ls("" , "test1Dir");
+        String[] exepected = ci.ls("" , "");
         assertArrayEquals(lines.toArray(new String[0]),exepected);
     }
 

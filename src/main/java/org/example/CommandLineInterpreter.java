@@ -154,13 +154,13 @@ public class CommandLineInterpreter {
         }
         if (result.length > 0) {
             File f = new File(splited_command[splited_command.length - 1]);
-//            if (!f.isAbsolute()) {
-//                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
-//            }
-//            if (f.isDirectory()) {
-//                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
-//                return;
-//            }
+            if (!f.isAbsolute()) {
+                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
+            }
+            if (f.isDirectory()) {
+                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
+                return;
+            }
             if (!f.exists()) {
                 if (flag) {
                     System.out.println("write : echo text >> <file>");
@@ -221,13 +221,13 @@ public class CommandLineInterpreter {
         }
         if (result.length > 0) {
             File f = new File(splited_command[splited_command.length - 1]);
-//            if (!f.isAbsolute()) {
-//                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
-//            }
-//            if (f.isDirectory()) {
-//                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
-//                return;
-//            }
+            if (!f.isAbsolute()) {
+                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
+            }
+            if (f.isDirectory()) {
+                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
+                return;
+            }
             if (flag) {
                 System.out.println("write : echo text > <file>");
             } else {

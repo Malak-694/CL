@@ -125,7 +125,7 @@ public class Main {
                 terminal.help();
             } else if (command[0].equalsIgnoreCase("pwd")) {
                 System.out.println("Current Directory: " + terminal.pwd());
-                break;
+
             } else if (command[0].equalsIgnoreCase("mkdir")) {
                 if (command.length > 1) {
                     for (int i = 1; i < command.length; i++) {
