@@ -144,6 +144,13 @@ public class CommandLineInterpreter {
         }
         if (result.length > 0) {
             File f = new File(splited_command[splited_command.length - 1]);
+            if (!f.isAbsolute()) {
+                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
+            }
+            if (f.isDirectory()) {
+                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
+                return;
+            }
             if (!f.exists()) {
                 if (flag == true) {
                     System.out.println("write : echo text >> <file>");
@@ -153,7 +160,7 @@ public class CommandLineInterpreter {
             } else {
                 FileWriter fw = null;
                 try {
-                    fw = new FileWriter(splited_command[splited_command.length - 1], true);
+                    fw = new FileWriter(f , true);
 
                     for (String string : result) {
                         fw.write(string);
@@ -194,12 +201,19 @@ public class CommandLineInterpreter {
         }
         if (result.length > 0) {
             File f = new File(splited_command[splited_command.length - 1]);
+            if (!f.isAbsolute()) {
+                f = new File(Main.curren_dir, splited_command[splited_command.length - 1]);
+            }
+            if (f.isDirectory()) {
+                System.out.println("Error: Cannot write to directory '" + f.getName() + "'");
+                return;
+            }
             if (flag) {
                 System.out.println("write : echo text >> <file>");
             } else {
                 FileWriter fw = null;
                 try {
-                    fw = new FileWriter(splited_command[splited_command.length - 1], true);
+                    fw = new FileWriter(f , true);
 
                     for (String string : result) {
                         fw.write(string);

@@ -162,6 +162,11 @@ public class Main {
                         String[] paths= Arrays.copyOfRange(command, 1, command.length);
                         terminal.mv(paths);
                     }
+
+
+                }
+                else{
+                    System.out.println("wrong command");
                 }
                 current_c++;
 
