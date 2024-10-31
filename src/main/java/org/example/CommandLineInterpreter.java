@@ -285,7 +285,7 @@ public class CommandLineInterpreter {
         }
         if (!currentDirectory.isDirectory()) {
             System.out.println("current path is not directory");
-        }
+        }//*
         File[] files = null;
         List<String> visibleFiles = new ArrayList<>();
         if (currentDirectory.exists() && currentDirectory.isDirectory()) {
