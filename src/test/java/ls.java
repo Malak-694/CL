@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ls {
     @BeforeEach
     public void before() throws IOException{
-        File testDir = new File("testDir");
+        File testDir = new File("testDir1");
         if(!testDir.exists()){
             testDir.mkdir();
         }
@@ -20,7 +20,7 @@ public class ls {
     }
     @AfterEach
     public void clear(){
-        File testDir = new File("testDir");
+        File testDir = new File("testDir1");
         File[] files = testDir.listFiles();
         if(files!=null) {
             for (File file : files) {
@@ -29,21 +29,24 @@ public class ls {
             testDir.delete();
         }
     }
+
     @Test
     public void lcTest(){
 
         CommandLineInterpreter terminal = new CommandLineInterpreter();
         String specification="";
-        String path="testDir";
+        String path="testDir1";
         String[] file = terminal.ls(specification,path);
-        assertTrue(file.length==2,"this command should return the list of files in the directory");
+        //assertTrue(file.length==2,"this command should return the list of files in the directory");
+     assertEquals(List.of("file1.txt", "zile2.txt"), List.of(file));
+
     }
     @Test
     public void lc_aTest(){
 
         CommandLineInterpreter terminal = new CommandLineInterpreter();
         String specification="-a";
-        String path="testDir";
+        String path="testDir1";
         String[] files = terminal.ls(specification,path);
         boolean foundWithDot = Arrays.stream(files).anyMatch(file->file.equals(".file3.txt"));
         assertTrue(foundWithDot,"this command should return the list of all files in the directory even if it starts with .");
@@ -53,7 +56,7 @@ public class ls {
 
         CommandLineInterpreter terminal = new CommandLineInterpreter();
         String specification="-r";
-        String path="testDir";
+        String path="testDir1";
         String[] files = terminal.ls(specification,path);
         boolean foundZfirst = files[0].equals("zile2.txt");
 
