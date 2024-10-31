@@ -489,7 +489,7 @@ public class CommandLineInterpreter {
                     result = new String[0];
                 }
                 else {
-                    File f = new File(command[1]);
+                    File f = new File(Main.curren_dir,command[1]);
                     if(f.exists()){
                         result = sort(command[1]);
                     }

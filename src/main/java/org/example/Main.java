@@ -65,39 +65,8 @@ public class Main {
                     System.out.println("wrong command");
                 }
 
-            } else if (command[0].equalsIgnoreCase("sort")) {
-                if (command.length != 2) {
-                    System.out.println("write: sort <<fileName>>");
-                    result = new String[0];
-                } else {
-                    File f = new File(command[1]);
-                    if (f.exists()) {
-                        result = terminal.sort(command[1]);
-                    } else {
-                        System.out.println("no file exists with this name");
-                    }
-                }
-            } else if (command[0].equalsIgnoreCase("uniq") && result.length > 0) {
-                if (command.length > 1) {
-                    System.out.println("use command wrong");
-                    result = new String[0];
-                } else {
-                    result = terminal.uniq(result);
-                }
-            } else if (command[0].equals("grep")) {
-                if (command.length != 2 && result.length == 0) {
-                    System.out.println("wrong command");
-                    result = new String[0];
-                } else {
-                    result = terminal.grep(result, command[1]);
-                }
-            } else if (command[0].equals("more")) {
-                if (current_c == 0 || command.length > 1) {
-                    System.out.println("wrong command");
-                    result = new String[0];
-                }
-
-            } else if (command[0].equals("rm")) {
+            }
+            else if (command[0].equals("rm")) {
                 if (command.length < 2) {
                     System.out.println("ERROR:there is not file to remove");
                 } else {
@@ -146,7 +115,6 @@ public class Main {
             } else {
                 System.out.println("wrong command");
             }
-            current_c++;
 
 
             for (String line : result) {
