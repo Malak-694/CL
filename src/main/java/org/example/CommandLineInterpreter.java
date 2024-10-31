@@ -312,26 +312,31 @@ public class CommandLineInterpreter {
     }
 
     public String touch(String path) {
+        path = path.replace("\\", "\\\\");
+
         File file;
         if (Paths.get(path).getParent() == null) {
+            if (Main.curren_dir == null ||! new File(Main.curren_dir).isDirectory()) {
+                return "Error: Current directory is invalid";
+            }
             file = new File(Main.curren_dir, path);
         } else {
             file = new File(path);
         }
         try {
             Path parentPath = file.toPath().getParent();
-            if (parentPath != null || Files.notExists(parentPath)) {
+            if (parentPath == null || Files.notExists(parentPath)) {
 
                 System.out.println("Parent directory not exist");
+            }else{
+                if (file.exists()) {
+                    file.setLastModified(System.currentTimeMillis());
+                    System.out.println("file exists");
+                } else {
+                    Files.createFile(file.toPath());
+                    System.out.println("file created");
+                }
             }
-            if (file.exists()) {
-                file.setLastModified(System.currentTimeMillis());
-                System.out.println("file exists");
-            } else {
-                Files.createFile(file.toPath());
-                System.out.println("file created");
-            }
-
         } catch (IOException x) {
             System.out.println("error happening while creating new file " + x);
         }
