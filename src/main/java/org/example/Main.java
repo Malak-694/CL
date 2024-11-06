@@ -44,9 +44,10 @@ public class Main {
                 result = terminal.ls(specification, path);
             } else if (command[0].equalsIgnoreCase("touch")) {
                 String path;
-                if (command.length == 2) {
-                    path = command[1];
-                    terminal.touch(path);
+                if (command.length >1 ) {
+                    for (int i = 1; i < command.length; i++) {
+                        terminal.touch(command[i]);
+                    }
                 } else {
                     System.out.println("Error: No file path provided for touch command.");
 
@@ -56,6 +57,7 @@ public class Main {
                 if (command.length == 2) {
                     // System.out.println(curren_dir);
                     try {
+
                         terminal.cd(curren_dir, command[1]);
                     } catch (IOException e) {
                         throw new RuntimeException(e);

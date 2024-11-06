@@ -108,8 +108,11 @@ public class CommandLineInterpreter {
             }
             Dircectory = current_dir + '\\' + argu;
             File dir = new File(Dircectory);
+            File dir2 = new File(argu);
             if (dir.isDirectory()) {
                 Main.curren_dir = Dircectory;
+            } else if (dir2.isDirectory()) {
+                Main.curren_dir = argu;
             } else {
                 System.out.println("NO dirctoy with this name");
             }
